@@ -20,7 +20,7 @@ app.get('/', (req, res) => res.send('Hello World!'));
 app.use('/login', login);
 app.use('/signup', signup);
 app.use('/refresh', refresh);
-app.use('/logout',authJWT, logout);
+app.use('/logout', logout);
 
 
 // 에러를 JSON으로 응답
