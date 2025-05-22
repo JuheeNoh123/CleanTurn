@@ -1,4 +1,4 @@
-const db = require('../../util/mysql')
+const db = require('../util/mysql')
 const bcrypt = require('bcrypt');
 module.exports = class Member {
     constructor(name,email,pw) {
@@ -28,6 +28,7 @@ module.exports = class Member {
         if (rows.length === 0) {
             return null;
         }
+        console.log(rows[0]);
         return rows[0];
         } catch (err) {
         console.error('DB error in findByEmail:', err);
