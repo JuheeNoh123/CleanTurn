@@ -7,10 +7,13 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   if (req.headers.authorization && req.headers.refresh) {
     const authToken = req.headers.authorization.split('Bearer ')[1];
-    const refreshToken = req.headers.refresh;
-
+    const refreshToken = req.headers.refresh.split('Bearer ')[1];
+    console.log(authToken);
+    console.log(refreshToken);
     const authResult = verify(authToken);
+    console.log(authResult);
     const decoded = jwt.decode(authToken);
+    console.log(decoded);
 
     if (!decoded) {
       return res.status(401).send({
@@ -22,10 +25,11 @@ router.post('/', async (req, res) => {
     const refreshResult = await refreshVerify(refreshToken, decoded.id); // ← await 추가해야 함
 
     if (authResult.ok === false && authResult.message === 'jwt expired') {
+      console.log(refreshResult);
       if (!refreshResult) {
         return res.status(401).send({
           ok: false,
-          message: 'No authorized!',
+          message: '다시 로그인 하세요',
         });
       } else {
         const newAccessToken = sign(decoded); // 여기서 user가 아니라 decoded 사용

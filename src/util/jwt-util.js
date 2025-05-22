@@ -1,7 +1,7 @@
 require('dotenv').config(); 
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');
-const redisClient = require('./redis');
+const { redisClient } = require('./redis');
 const accessSecret = process.env.ACCESS_TOKEN_SECRET;
 const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
 
@@ -16,7 +16,7 @@ module.exports = {
 
     return jwt.sign(payload, accessSecret, { // secret으로 sign하여 발급하고 return
       algorithm: 'HS256', // 암호화 알고리즘
-      expiresIn: '10m', 	  // 유효기간
+      expiresIn: '1h', 	  // 유효기간
     });
   },
   verify: (token) => { // access token 검증
@@ -44,10 +44,11 @@ module.exports = {
   refreshVerify: async (token, userId) => { // refresh token 검증
     /* redis 모듈은 기본적으로 promise를 반환하지 않으므로,
        promisify를 이용하여 promise를 반환하게 해줍니다.*/
-    const getAsync = promisify(redisClient.get).bind(redisClient);
     
+    console.log(userId);
     try {
-      const data = await getAsync(userId); // refresh token 가져오기
+      const data = await redisClient.get(String(userId));
+      console.log("data",data);
       if (token === data) {
         try {
           jwt.verify(token, refreshSecret);
@@ -59,6 +60,7 @@ module.exports = {
         return false;
       }
     } catch (err) {
+      console.error('Redis get error:', err);
       return false;
     }
   },

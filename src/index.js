@@ -1,7 +1,7 @@
 // app.js
 require('dotenv').config();
 const express = require('express');
-const { redisClient, connectRedis } = require('./util/redis');
+
 const login = require('./routes/login');
 const signup = require('./routes/signup');
 const authJWT = require('./middleware/authJWT');
@@ -20,7 +20,7 @@ app.get('/', (req, res) => res.send('Hello World!'));
 app.use('/login', login);
 app.use('/signup', signup);
 app.use('/refresh', refresh);
-app.use('/logout', logout);
+app.use('/logout',authJWT, logout);
 
 
 // 에러를 JSON으로 응답
@@ -28,7 +28,7 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ ok: false, message: err.message });
 });
-
+const { redisClient, connectRedis } = require('./util/redis');
 connectRedis().then(() => {
   app.listen(8000, () => console.log('App running on port 8000...'));
 }).catch((err) => {
