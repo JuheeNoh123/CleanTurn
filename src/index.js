@@ -2,11 +2,11 @@
 require('dotenv').config();
 const express = require('express');
 
-const login = require('./routes/login');
-const signup = require('./routes/signup');
+const login = require('./routes/signInOut/login');
+const signup = require('./routes/signInOut/signup');
 const authJWT = require('./middleware/authJWT');
 const refresh = require('./util/refresh');
-const logout = require('./routes/logout');
+const logout = require('./routes/signInOut/logout');
 
 
 const app = express();

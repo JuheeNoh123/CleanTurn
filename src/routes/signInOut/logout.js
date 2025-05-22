@@ -1,6 +1,6 @@
 const express = require('express');
-const { redisClient } = require('../util/redis');
-const auth = require('../middleware/authJWT'); // accessToken 검증
+const { redisClient } = require('../../util/redis');
+const auth = require('../../middleware/authJWT'); // accessToken 검증
 
 const router = express.Router();
 
