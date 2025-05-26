@@ -1,5 +1,6 @@
 const db = require('../util/mysql')
-class userGroup{
+
+module.exports = class userGroup{
     constructor(title){
         this.title = title;
     }
@@ -26,10 +27,15 @@ class userGroup{
         return rows[0];
     }
 
+    static async updateById(title, id){
+        const [rows] =  await db.execute(
+            'update usergroup set title = ? where id = ? ',
+            [title,id]
+        );
+        return rows[0];
+    }
     
     
 }
 
 
-
-module.exports = { userGroup };

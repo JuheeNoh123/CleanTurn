@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const userGroup = require('../../models/groupModel')
+const userGroup = require('../../models/userGroupModel')
 const JoinGroupMember = require('../../models/JoinGroupMemberModel')
 const Member = require('../../models/memberModel');
 
@@ -48,18 +48,40 @@ router.get('/getmembers/:groupId',async(req,res)=>{
     
 })
 
+// 중복 검사 함수
+function hasDuplicates(array) {
+    return new Set(array).size !== array.length;
+}
+
 router.put('/updatemembers/:groupId',async(req,res)=>{
     const groupId = req.params.groupId;
+    const {id, email} = req.user;
+    const {title, emailList} = req.body;
+    emailList.push(email);
+    if (hasDuplicates(emailList)) {
+        return res.status(400).send({ message: '중복된 멤버 이메일이 있습니다.' });
+    }
     const joingroup = await JoinGroupMember.findByGroupId(groupId);
-    if(joingroup[0]){
+    console.log(joingroup[0])
+    try{
+        await userGroup.updateById(title,groupId);
         for (const m of joingroup[0]){
-            
+            await JoinGroupMember.deleteById(m.id);
         }
-        return res.status(200).send(memberList);
+        await JoinGroupMember.saveJoinGroupMember(groupId,id)
+        for (const e of emailList){
+            console.log(e);
+            const member = await Member.findByEmail(e);
+            await JoinGroupMember.saveJoinGroupMember(groupId,member.id);
+        }
+        return res.status(200).send("업데이트 완료");
+    }catch(err){
+        console.log(err);
+        return res.status(500).send("업데이트 실패");
     }
-    else{
-        return res.status(200).send("속한 멤버가 없습니다.");
-    }
+    
+    
+    
     
 })
 module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const Member = require('../../models/memberModel'); 
-const userGroup = require('../../models/groupModel');
+const userGroup = require('../../models/userGroupModel');
 const JoinGroupMember = require('../../models/JoinGroupMemberModel')
 const cleanZone = require('../../models/cleanZoneModel');
 
