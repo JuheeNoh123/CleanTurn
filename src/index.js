@@ -1,7 +1,7 @@
 // app.js
 require('dotenv').config();
 const express = require('express');
-
+const cors = require('cors')
 const login = require('./routes/signInOut/login');
 const signup = require('./routes/signInOut/signup');
 const authJWT = require('./middleware/authJWT');
@@ -13,7 +13,10 @@ const AIcleaning = require('./routes/group/AIcleaning');
 const getgroup = require('./routes/group/group');
 
 const app = express();
-
+app.use(cors({
+  origin: true, // 허용할 도메인
+  credentials: true
+}));
 app.use(express.json()); // JSON 데이터 파싱
 app.use(express.urlencoded({ extended: true })); // Form 데이터 파싱
 
