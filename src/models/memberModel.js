@@ -36,16 +36,17 @@ module.exports = class Member {
         }
     }
 
-    // static async findById(id){
-    //     try{
-    //         return await db.execute(
-    //             'select * from member where id=?',
-    //             [id]
-    //         )
-    //     }
-    //     catch (err) {
-    //         console.error('DB error in findById:', err);
-    //         throw err;
-    //     }
-    // }
+    static async findById(id){
+        try{
+            const res = await db.execute(
+                'select * from member where id=?',
+                [id]
+            )
+            return res[0][0];
+        }
+        catch (err) {
+            console.error('DB error in findById:', err);
+            throw err;
+        }
+    }
 };

@@ -18,27 +18,18 @@ class userGroup{
         );
         return rows[0];
     }
-
-    
-    
-}
-
-class JoinGroupMember{
-    static async saveJoinGroupMember(groupId, memberId){
-        return await db.execute(
-            'INSERT INTO joingroupmember (group_id, member_id) VALUES (?,?)',
-            [groupId, memberId]
+    static async findById(id){
+        const [rows] =  await db.execute(
+            'select * from usergroup where id = ? ',
+            [id]
         );
-    }
-
-    static async findAllByUserId(member_id){
-        const [rows] = await db.execute(
-                'SELECT * FROM joingroupmember WHERE member_id = ?',
-                [member_id]
-            );
-
         return rows[0];
     }
+
+    
+    
 }
 
-module.exports = { userGroup, JoinGroupMember };
+
+
+module.exports = { userGroup };

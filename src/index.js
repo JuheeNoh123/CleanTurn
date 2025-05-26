@@ -10,6 +10,7 @@ const logout = require('./routes/signInOut/logout');
 const mypage = require('./routes/mypage/mypage');
 const group = require('./routes/group/makegroup');
 const AIcleaning = require('./routes/group/AIcleaning');
+const getgroup = require('./routes/group/group');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/logout', logout);
 app.use('/mypage',authJWT,mypage);
 app.use('/group',authJWT,group);
 app.use('/group',authJWT,AIcleaning);
+app.use('/group',authJWT,getgroup);
 
 // 에러를 JSON으로 응답
 app.use((err, req, res, next) => {
