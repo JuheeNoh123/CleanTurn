@@ -18,6 +18,8 @@ class userGroup{
         );
         return rows[0];
     }
+
+    
     
 }
 
@@ -29,7 +31,14 @@ class JoinGroupMember{
         );
     }
 
-    
+    static async findAllByUserId(member_id){
+        const [rows] = await db.execute(
+                'SELECT * FROM joingroupmember WHERE member_id = ?',
+                [member_id]
+            );
+
+        return rows[0];
+    }
 }
 
 module.exports = { userGroup, JoinGroupMember };
