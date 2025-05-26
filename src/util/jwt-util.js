@@ -38,7 +38,7 @@ module.exports = {
   refresh: () => { // refresh token 발급
     return jwt.sign({}, refreshSecret, { // refresh token은 payload 없이 발급
       algorithm: 'HS256',
-      expiresIn: '14d',
+      expiresIn: '1d',
     });
   },
   refreshVerify: async (token, userId) => { // refresh token 검증
