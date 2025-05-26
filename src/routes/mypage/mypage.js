@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Member = require('../../models/member'); 
+const Member = require('../../models/memberModel'); 
 router.get('/',async(req,res)=>{
     const{id, email} = req.user;
     const user = await Member.findByEmail(email);

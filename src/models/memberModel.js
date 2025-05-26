@@ -21,18 +21,31 @@ module.exports = class Member {
     // 이메일로 회원 조회 (로그인용)
     static async findByEmail(email) {
         try {
-        const [rows] = await db.execute(
-            'SELECT * FROM Member WHERE email = ?',
-            [email]
-        );
-        if (rows.length === 0) {
-            return null;
-        }
-        console.log(rows[0]);
-        return rows[0];
+            const [rows] = await db.execute(
+                'SELECT * FROM Member WHERE email = ?',
+                [email]
+            );
+            if (rows.length === 0) {
+                return null;
+            }
+            console.log(rows[0]);
+            return rows[0];
         } catch (err) {
-        console.error('DB error in findByEmail:', err);
-        throw err;
+            console.error('DB error in findByEmail:', err);
+            throw err;
         }
     }
+
+    // static async findById(id){
+    //     try{
+    //         return await db.execute(
+    //             'select * from member where id=?',
+    //             [id]
+    //         )
+    //     }
+    //     catch (err) {
+    //         console.error('DB error in findById:', err);
+    //         throw err;
+    //     }
+    // }
 };

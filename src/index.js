@@ -8,6 +8,7 @@ const authJWT = require('./middleware/authJWT');
 const refresh = require('./util/refresh');
 const logout = require('./routes/signInOut/logout');
 const mypage = require('./routes/mypage/mypage');
+const group = require('./routes/group/group');
 
 
 const app = express();
@@ -23,6 +24,7 @@ app.use('/signup', signup);
 app.use('/refresh', refresh);
 app.use('/logout', logout);
 app.use('/mypage',authJWT,mypage);
+app.use('/group',authJWT,group);
 
 // 에러를 JSON으로 응답
 app.use((err, req, res, next) => {

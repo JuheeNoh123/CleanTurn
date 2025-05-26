@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwtUtil = require('../../util/jwt-util.js');
 const { redisClient } = require('../../util/redis.js');
 
-const Member = require('../../models/member.js');
+const Member = require('../../models/memberModel.js');
 
 const router = express.Router();
 
