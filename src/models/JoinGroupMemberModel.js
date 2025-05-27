@@ -1,6 +1,7 @@
 const db = require('../util/mysql')
 
 module.exports = class JoinGroupMember{
+    
     static async saveJoinGroupMember(groupId, memberId){
         return await db.execute(
             'INSERT INTO joingroupmember (group_id, member_id) VALUES (?,?)',
@@ -24,11 +25,30 @@ module.exports = class JoinGroupMember{
             );
     }
 
+    static async findByGroupAndMemberId(group_id,member_id){
+        const row= await db.execute(
+                'SELECT * FROM joingroupmember WHERE group_id = ? and member_id=?',
+                [group_id,member_id]
+            );
+        return row[0];
+    }
+
+    static async findById(id){
+        const row= await db.execute(
+                'SELECT * FROM joingroupmember WHERE id=?',
+                [id]
+            );
+        return row[0];
+    }
+
+
     static async deleteById(id){
         return await db.execute(
             'delete from joingroupmember where id=?',
             [id]
         );
     }
+
+    
 }
 

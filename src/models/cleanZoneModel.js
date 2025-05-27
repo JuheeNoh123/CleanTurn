@@ -5,6 +5,14 @@ module.exports = class cleanZone{
         return await db.execute(
             'insert into cleanzone (zoneName, group_id) values (?,?)',
             [zoneName, group_id]
-        )
+        );
+    }
+
+    static async findByGroupId(group_id){
+        const rows = await db.execute(
+            'select * from cleanzone where group_id=?',
+            [group_id]
+        );
+        return rows[0];
     }
 }
