@@ -11,6 +11,7 @@ const mypage = require('./routes/mypage/mypage');
 const group = require('./routes/group/makegroup');
 const AIcleaning = require('./routes/group/AIcleaning');
 const getgroup = require('./routes/group/group');
+const cleanZone = require('./routes/cleanZone/cleanZone');
 
 const app = express();
 app.use(cors({
@@ -31,6 +32,7 @@ app.use('/mypage',authJWT,mypage);
 app.use('/group',authJWT,group);
 app.use('/group',authJWT,AIcleaning);
 app.use('/group',authJWT,getgroup);
+app.use('/group',authJWT,cleanZone);
 
 // 에러를 JSON으로 응답
 app.use((err, req, res, next) => {
