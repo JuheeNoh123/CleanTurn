@@ -59,8 +59,10 @@ router.put('/updatemembers/:groupId',async(req,res)=>{
     const {title, emailList} = req.body;
     emailList.push(email);
     if (hasDuplicates(emailList)) {
+        console.log('중복 있음, 리턴');
         return res.status(400).send({ message: '중복된 멤버 이메일이 있습니다.' });
     }
+    console.log('중복 없음, 계속 진행');
     const joingroup = await JoinGroupMember.findByGroupId(groupId);
     console.log(joingroup[0])
     try{
@@ -68,7 +70,7 @@ router.put('/updatemembers/:groupId',async(req,res)=>{
         for (const m of joingroup[0]){
             await JoinGroupMember.deleteById(m.id);
         }
-        await JoinGroupMember.saveJoinGroupMember(groupId,id)
+        //await JoinGroupMember.saveJoinGroupMember(groupId,id)
         for (const e of emailList){
             console.log(e);
             const member = await Member.findByEmail(e);
