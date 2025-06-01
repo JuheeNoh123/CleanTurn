@@ -15,4 +15,11 @@ module.exports = class cleanZone{
         );
         return rows[0];
     }
+
+    static async delete(group_id){
+        return await db.execute(
+            'delete from cleanzone where group_id=?',
+            [group_id]
+        );
+    }
 }

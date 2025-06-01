@@ -57,4 +57,16 @@ router.put('/cleanzone/updatemember/:groupId',async(req,res)=>{
 
     return res.status(200).send('업데이트 완료');
 });
+
+router.put('/cleanzone/updatezone/:groupId',async(req,res)=>{
+    const groupId = req.params.groupId;
+    const cleanzones = req.body;
+    await CleanZoneModel.delete(groupId);
+    for (const cleanzone of cleanzones){
+        console.log(cleanzone);
+        await CleanZoneModel.saveCleanZone(cleanzone,groupId);
+    }
+    
+    return res.send("업데이트 완료");
+})
 module.exports = router;
