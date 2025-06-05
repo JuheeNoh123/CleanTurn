@@ -12,12 +12,11 @@ const group = require('./routes/group/makegroup');
 const AIcleaning = require('./routes/group/AIcleaning');
 const getgroup = require('./routes/group/group');
 const cleanZone = require('./routes/cleanZone/cleanZone');
-<<<<<<< HEAD
+
 const schedule = require('./routes/schedule/schedule');
-=======
+
 const cleanboard = require('./routes/bulletinboard/cleanboard');
 //const board = require('./routes/bulletinboard/makeboard');
->>>>>>> 4e6910bd5a03df83bf093790e0bd7baffc27bebe
 
 const app = express();
 app.use(cors({
@@ -39,14 +38,10 @@ app.use('/group',authJWT,group);
 app.use('/group',authJWT,AIcleaning);
 app.use('/group',authJWT,getgroup);
 app.use('/group',authJWT,cleanZone);
-<<<<<<< HEAD
 app.use('/schedule',authJWT,schedule);
-=======
 app.use('/cleanboard',authJWT,cleanboard);
 //app.use('/makeCleanBoard',authJWT, board);
->>>>>>> 4e6910bd5a03df83bf093790e0bd7baffc27bebe
 
-// 에러를 JSON으로 응답
 // 에러를 JSON으로 응답
 app.use((err, req, res, next) => {
   console.error(err.stack);
