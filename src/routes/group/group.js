@@ -8,12 +8,11 @@ router.get('/getall',async(req,res)=>{
     const {id, email} = req.user;
     const joinGroups = await JoinGroupMember.findAllByUserId(id);
     console.log(joinGroups);
-    groups = {}
+    groups = []
     if (joinGroups){
         for (const j of joinGroups){
             group = await userGroup.findById(j.group_id);
-            
-            groups[j.group_id]= group.title;
+            groups.push({'id':j.group_id, "name":group.title})
             
         }
         return res.status(200).send(groups);
