@@ -12,8 +12,11 @@ const group = require('./routes/group/makegroup');
 const AIcleaning = require('./routes/group/AIcleaning');
 const getgroup = require('./routes/group/group');
 const cleanZone = require('./routes/cleanZone/cleanZone');
+
 const schedule = require('./routes/schedule/schedule');
 const randomschedule = require('./routes/schedule/randomschedule');
+const cleanboard = require('./routes/feedback/cleanboard');
+//const board = require('./routes/bulletinboard/makeboard');
 
 const app = express();
 app.use(cors({
@@ -36,7 +39,8 @@ app.use('/group',authJWT,AIcleaning);
 app.use('/group',authJWT,getgroup);
 app.use('/group',authJWT,cleanZone);
 app.use('/schedule',authJWT,schedule);
-app.use('/schedule',authJWT,randomschedule);
+app.use('/cleanboard',authJWT,cleanboard);
+//app.use('/makeCleanBoard',authJWT, board);
 
 // 에러를 JSON으로 응답
 app.use((err, req, res, next) => {
