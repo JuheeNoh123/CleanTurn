@@ -22,4 +22,12 @@ module.exports = class scheduleModel{
         );
         return row[0];
     }
+
+    static async getAllByDay(day){
+        const row =  await db.execute(
+            'select * from schedule where repeatday=?',
+            [day]
+        );
+        return row[0];
+    }
 }

@@ -22,4 +22,12 @@ module.exports = class specialScheduleModel{
         );
         return row[0];
     }
+
+    static async getAllByDate(cleanDate){
+        const row =  await db.execute(
+            'select * from specialschedule where cleanDate=?',
+            [cleanDate]
+        );
+        return row[0];
+    }
 }
