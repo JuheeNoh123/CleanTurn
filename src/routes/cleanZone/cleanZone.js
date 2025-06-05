@@ -9,24 +9,24 @@ const router = express.Router();
 router.get('/cleanzone/show/:groupId',async(req,res)=>{
     const groupId = req.params.groupId;
     const cleanZones = await CleanZoneModel.findByGroupId(groupId);
-    console.log(cleanZones);
+    console.log("cleanZones : ",cleanZones);
     data = []
     for (const cleanZone of cleanZones){
         const joinCZGM = await JoinCZGMModel.findByCleanZoneId(cleanZone.id);
-        console.log(joinCZGM);
+        console.log("joinCZGM : ",joinCZGM);
         if (joinCZGM.length>0){
             const joinGroupMember = await JoinGroupMemberModel.findById(joinCZGM[0].joinGroupMember_id);
-            console.log(joinGroupMember);
+            console.log("joinGroupMember : ",joinGroupMember);
             const member = await MemberModel.findById(joinGroupMember[0].member_id);
-            data.push({'cleanZoneId':cleanZone.id, 'zoneName': cleanZone.zoneName, "member": member.name});
+            data.push({'id':joinCZGM[0].id,'cleanZoneId':cleanZone.id, 'zoneName': cleanZone.zoneName, "member": member.name});
         }
         else{
-            data.push({'cleanZoneId':cleanZone.id, 'zoneName': cleanZone.zoneName, "member": null});
+            data.push({'id':null,'cleanZoneId':cleanZone.id, 'zoneName': cleanZone.zoneName, "member": null});
         }
         
         
     }
-
+    console.log(data)
     return res.status(200).send(data);
 });
 
