@@ -34,7 +34,7 @@ router.put('/update/:groupId',async(req,res)=>{
         
         
     }
-    res.send("ok");
+    res.status(201).send("ok");
 });
 
 
