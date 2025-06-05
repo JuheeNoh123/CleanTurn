@@ -6,4 +6,20 @@ module.exports = class scheduleModel{
             [joincleanzonegroupmember_id, repeatday]
         );
     }
+
+    static async findByGCZMAndDay(joincleanzonegroupmember_id){
+        const row =  await db.execute(
+            'select * from schedule where joincleanzonegroupmember_id=?',
+            [joincleanzonegroupmember_id]
+        );
+        return row[0];
+    }
+
+    static async deleteByJoinGCZMId(joincleanzonegroupmember_id){
+        const row =  await db.execute(
+            'delete from schedule where joincleanzonegroupmember_id=?',
+            [joincleanzonegroupmember_id]
+        );
+        return row[0];
+    }
 }

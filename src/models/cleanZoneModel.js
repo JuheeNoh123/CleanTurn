@@ -16,6 +16,14 @@ module.exports = class cleanZone{
         return rows[0];
     }
 
+    static async findById(id){
+        const rows = await db.execute(
+            'select * from cleanzone where id=?',
+            [id]
+        );
+        return rows[0][0];
+    }
+
     static async delete(group_id){
         return await db.execute(
             'delete from cleanzone where group_id=?',
