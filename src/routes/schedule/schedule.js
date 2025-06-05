@@ -15,19 +15,19 @@ const router = express.Router();
 ]
 
 */
-// router.post('/make/:groupId',async(req,res)=>{
-//     const groupId = req.params.groupId;
-//     const schedules = req.body;
-//     for (const s of schedules){
-//         for (const day of s.repeatDay){
-//             scheduleModel.save(s.joinCleanZoneMemberId, day);
-//         }
-//         for (const cleandate of s.repeatDay){
-//             scheduleModel.save(s.joinCleanZoneMemberId, cleandate);
-//         }
+router.post('/make',async(req,res)=>{
+    const schedules = req.body;
+    for (const s of schedules){
+        for (const day of s.repeatDay){
+            await scheduleModel.save(s.joinCleanZoneMemberId, day);
+        }
+        for (const cleandate of s.special){
+            await specialScheduleModel.save(s.joinCleanZoneMemberId, cleandate);
+        }
         
         
-//     }
-// });
+    }
+    res.send("ok");
+});
 
 module.exports = router;

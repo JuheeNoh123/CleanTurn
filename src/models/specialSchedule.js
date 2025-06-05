@@ -1,8 +1,8 @@
 const db = require('../util/mysql')
-module.exports = class scheduleModel{
+module.exports = class specialScheduleModel{
     static async save(joincleanzonegroupmember_id, cleanDate){
         return await db.execute(
-            'insert into schedule (joincleanzonegroupmember_id, cleanDate) VALUES (?,?)',
+            'insert into specialSchedule (joincleanzonegroupmember_id, cleandate) VALUES (?,?)',
             [joincleanzonegroupmember_id, cleanDate]
         );
     }
