@@ -1,5 +1,7 @@
 const express = require('express');
 const sendEmail = require('../../util/sendmail');
+const memberModel = require('../../models/memberModel');
+const memberModel = require('../../models/memberModel');
 const router = express.Router();
 function getTodayDate() {
     const today = new Date();
@@ -7,6 +9,7 @@ function getTodayDate() {
 }
 cron.schedule('0 9 * * *', async () => {
     const today = getTodayDate();
-    
+
+    memberModel
 });
 module.exports = router;
