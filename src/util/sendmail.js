@@ -1,25 +1,27 @@
 const nodemailer = require('nodemailer');
-async function sendEmail({ to, subject, text }) {
+require('dotenv').config();
+async function sendEmail({ to, subject, html }) {
+    try {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAILPASSWORD
+            }
+        });
 
-    const transporter = nodemailer.createTransport({
-        service: 'smtp.gmail.com', // gmail을 사용함
-        port: 587,
-        auth: {
-            user: process.env.EMAIL , // 나의 (작성자) 이메일 주소
-            pass: process.env.EMAILPASSWORD // 이메일의 비밀번호
-        }
-    });
+        const mailOptions = {
+            from: process.env.EMAIL,
+            to,
+            subject,
+            html,
+        };
 
-    // 메일 옵션 설정
-    const mailOptions = {
-        from: process.env.EMAIL,
-        to,
-        subject,
-        text,
-    };
-
-    // 이메일 전송
-    await transporter.sendMail(mailOptions);
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
+    } catch (error) {
+        console.error('Error sending email:', error);
+    }
 }
 
 module.exports = sendEmail;

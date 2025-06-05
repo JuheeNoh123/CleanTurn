@@ -1,7 +1,7 @@
 const express = require('express');
 const Member = require('../../models/memberModel'); 
 const userGroup = require('../../models/userGroupModel');
-const JoinGroupMember = require('../../models/JoinGroupMemberModel')
+const JoinGroupMember = require('../../models/joinGroupMemberModel')
 const cleanZone = require('../../models/cleanZoneModel');
 
 const router = express.Router();

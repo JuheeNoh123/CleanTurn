@@ -1,8 +1,8 @@
 const express = require('express');
 
-const JoinCZGMModel = require('../../models/JoinCleanZoneGroupMember');
+const JoinCZGMModel = require('../../models/joinCleanZoneGroupMember');
 const CleanZoneModel = require('../../models/cleanZoneModel');
-const JoinGroupMemberModel = require('../../models/JoinGroupMemberModel');
+const JoinGroupMemberModel = require('../../models/joinGroupMemberModel');
 const MemberModel = require('../../models/memberModel');
 
 const router = express.Router();
