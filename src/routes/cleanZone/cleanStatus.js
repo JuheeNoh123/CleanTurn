@@ -8,9 +8,9 @@ const joinGroupCleanZoneMemberModel = require('../../models/joinCleanZoneGroupMe
 const cleanboardModel = require('../../models/cleanboardModel');
 const cleanZoneModel=require('../../models/cleanZoneModel');
 const router = express.Router();
+const cron = require('node-cron');
+cron.schedule('52 1 * * *', async () => {
 
-//cron.schedule('0 9 * * *', 
-(async () => {
     const today = new Date();
     const todaySTR = today.toISOString().slice(0, 10);
     
@@ -97,6 +97,8 @@ const router = express.Router();
             });
         }
     }
-})();
-//});
+},{
+    timezone: "Asia/Seoul"
+});
+
 module.exports = router;
