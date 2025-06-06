@@ -15,7 +15,7 @@ const cleanZone = require('./routes/cleanZone/cleanZone');
 
 const schedule = require('./routes/schedule/schedule');
 
-const cleanboard = require('./routes/bulletinboard/cleanboard');
+const cleanboard = require('./routes/cleanboard/cleanboard');
 //const board = require('./routes/bulletinboard/makeboard');
 
 const app = express();
