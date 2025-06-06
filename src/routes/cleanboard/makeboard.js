@@ -1,7 +1,9 @@
 const express = require('express');
+
 const Member = require('../../models/memberModel'); 
 const userGroup = require('../../models/userGroupModel');
 const cleanZoneModel = require('../../models/cleanZoneModel'); 
+
 const cleanboardModel = require("../../models/cleanboardModel");
 const joinGroupMemberModel = require("../../models/joinGroupMemberModel");
 const joinCleanZoneGroupMemberModel = require("../../models/joinCleanZoneGroupMember");
@@ -13,6 +15,7 @@ const router = express.Router();
 
 //변수처리부분 :~으로 처리
 //req = 받기 res = 보내기기
+
 router.post('/make/:groupId', upload.array('images', 2), async(req,res)=>{
     const groupId = req.params.groupId;
     console.log('업로드된 파일들:', req.files);
