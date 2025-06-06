@@ -5,7 +5,7 @@ const cleanZone = require('../../models/cleanZoneModel');
 
 const router = express.Router();
 
-//청소 현황 게시판 조회
+//게시판 조회
 router.get('/', async(req,res) => {
     
 });

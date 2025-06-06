@@ -17,7 +17,7 @@ const schedule = require('./routes/schedule/schedule');
 const randomschedule = require('./routes/schedule/randomschedule');
 
 const cleanboard = require('./routes/cleanboard/cleanboard');
-//const board = require('./routes/bulletinboard/makeboard');
+const makecleanboard = require('./routes/cleanboard/makeboard');
 
 const app = express();
 app.use(cors({
@@ -41,8 +41,8 @@ app.use('/group',authJWT,getgroup);
 app.use('/group',authJWT,cleanZone);
 app.use('/schedule',authJWT,schedule);
 
-app.use('/cleanboard',authJWT,cleanboard);
-//app.use('/makeCleanBoard',authJWT, board);
+app.use('/cleanboard',authJWT, cleanboard);
+app.use('/cleanboard',authJWT, makecleanboard);
 
 app.use('/schedule',authJWT,randomschedule);
 
