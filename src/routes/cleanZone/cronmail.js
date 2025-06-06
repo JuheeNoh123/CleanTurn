@@ -1,64 +1,15 @@
 const express = require('express');
 const sendEmail = require('../../util/sendmail');
-const memberModel = require('../../models/memberModel');
-const scheduleModel = require('../../models/scheduleModel');
-const speciaScheduleModel = require('../../models/specialSchedule');
-const joinGroupMemberModel = require('../../models/joinGroupMemberModel');
-const joinGroupCleanZoneMemberModel = require('../../models/joinCleanZoneGroupMember');
-const cleanboardModel = require('../../models/cleanboardModel');
-const cleanZoneModel=require('../../models/cleanZoneModel');
+const getTodayCleanList = require('./getTodayCleanList');
 const router = express.Router();
 const cron = require('node-cron');
-cron.schedule('37 2 * * *', async () => {
-
-    const today = new Date();
-    const todaySTR = today.toISOString().slice(0, 10);
+cron.schedule('0 9 * * *', async () => {
+    const sendlist = await getTodayCleanList(); 
     
-    const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-    const dayName = days[today.getDay()];
-    const schedules = await scheduleModel.getAllByDay(dayName);
-    console.log(schedules);
-    const sendlist = []
-    for (const s of schedules){
-        console.log(s);
-        const joinGroupCleanZoneMember = await joinGroupCleanZoneMemberModel.findById(s.joinCleanZoneGroupMember_id);
-        const cleanZoneName = await cleanZoneModel.findById(joinGroupCleanZoneMember[0].cleanZone_id);
-        console.log(joinGroupCleanZoneMember);
-        const joinGroupMember = await joinGroupMemberModel.findById(joinGroupCleanZoneMember[0].joinGroupMember_id);
-        console.log(joinGroupMember);
-        const member = await memberModel.findById(joinGroupMember[0].member_id);
-        console.log(member);
-        sendlist.push({"cleanzone": cleanZoneName,
-                "member":member
-            });
-        
-    }
-    
-    const specialSchedules = await speciaScheduleModel.getAllByDate(todaySTR);
-    for (const s of specialSchedules){
-        console.log(s);
-        const joinGroupCleanZoneMember = await joinGroupCleanZoneMemberModel.findById(s.joinCleanZoneGroupMember_id);
-        console.log(joinGroupCleanZoneMember);
-        const cleanZoneName = await cleanZoneModel.findById(joinGroupCleanZoneMember[0].cleanZone_id); 
-        const joinGroupMember = await joinGroupMemberModel.findById(joinGroupCleanZoneMember[0].joinGroupMember_id);
-        console.log(joinGroupMember);
-        const member = await memberModel.findById(joinGroupMember[0].member_id);
-        console.log(member);
-        //const email = member.email;
-        if (!sendlist.includes(member)){
-            sendlist.push({"cleanzone": cleanZoneName,
-                "member":member
-            });
-            
-        }
-        
-    }
     console.log(sendlist);
 
     for (const e of sendlist){
-        const IsWrite = await cleanboardModel.findByMemberId(e.member.id);
-        console.log(IsWrite);
-        if (IsWrite.length==0){
+        if(!e.isCleaned){
             await sendEmail({
                 to: e.member.email,
                 //to:'juhee10131013@gmail.com',

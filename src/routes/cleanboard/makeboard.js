@@ -13,6 +13,13 @@ const specialScheduleModel = require("../../models/specialSchedule");
 const upload = require('../../util/fileParser');
 const router = express.Router();
 
+// dayjs 설정
+const dayjs = require('dayjs');
+require("dayjs/plugin/utc");
+require("dayjs/plugin/timezone");
+dayjs.extend(require("dayjs/plugin/utc"));
+dayjs.extend(require("dayjs/plugin/timezone"));
+
 //변수처리부분 :~으로 처리
 //req = 받기 res = 보내기기
 
@@ -21,6 +28,7 @@ router.post('/make/:groupId', upload.array('images', 2), async(req,res)=>{
     console.log('업로드된 파일들:', req.files);
     const { cleantime, content } = req.body;
     const { id, email } = req.user;
+    console.log(id);
     const joingroupmember = await joinGroupMemberModel.findByGroupAndMemberId(groupId, id);
     const joinGCZM = await joinCleanZoneGroupMemberModel.findByJoinGroupMemberId(joingroupmember[0].id);
     
@@ -32,8 +40,8 @@ router.post('/make/:groupId', upload.array('images', 2), async(req,res)=>{
         await cleanboardModel.saveImage(boardId, img);
     }
 
-    const today = new Date();
-    const dayIndex = today.getDay(); // 0(일) ~ 6(토)
+    const today = dayjs().tz("Asia/Seoul");
+    const dayIndex = today.day(); // 0(일) ~ 6(토)
     const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
     const cleanzoneIdList =[]
     for (const jgczm of joinGCZM[0]){
