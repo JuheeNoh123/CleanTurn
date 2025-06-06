@@ -10,7 +10,7 @@ const joinGroupMemberModel = require('../../models/joinGroupMemberModel');
 const cleanboardModel = require('../../models/cleanboardModel');
 
 const feedbackModel = require("../../models/feedbackModel");
-const cleanboardModel = require("../../models/cleanboardModel");
+
 const Member = require("../../models/memberModel");
 const feedback = require('../../models/feedbackModel');
 
