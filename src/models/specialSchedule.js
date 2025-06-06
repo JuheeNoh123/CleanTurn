@@ -14,6 +14,13 @@ module.exports = class specialScheduleModel{
         );
         return row[0];
     }
+    static async findByDateAndJGCZM(date, jgczm_id){
+        const row = await db.execute(
+            'select * from specialSchedule where cleanDate=? and joinCleanZoneGroupMember_id=?',
+            [date,jgczm_id]
+        );
+        return row[0];
+    }
 
     static async deleteByJoinGCZMId(joincleanzonegroupmember_id){
         const row =  await db.execute(

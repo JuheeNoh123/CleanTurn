@@ -9,7 +9,7 @@ const cleanboardModel = require('../../models/cleanboardModel');
 const cleanZoneModel=require('../../models/cleanZoneModel');
 const router = express.Router();
 const cron = require('node-cron');
-cron.schedule('6 2 * * *', async () => {
+cron.schedule('37 2 * * *', async () => {
 
     const today = new Date();
     const todaySTR = today.toISOString().slice(0, 10);

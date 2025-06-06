@@ -142,7 +142,7 @@ router.get('/show/:groupId',async(req,res)=>{
 
 
     for (const i of cleaning){
-        const scheduleMagagerInfo = await scheduleModel.findByGCZMAndDay(i.joinGCZMid)
+        const scheduleMagagerInfo = await scheduleModel.findByGCZM(i.joinGCZMid)
         for (const s of scheduleMagagerInfo){
             const dayIndex = repeatDayMap[s.repeatDay];
             if (dayIndex !== undefined && !schedule[dayIndex].includes(s.joinCleanZoneGroupMember_id)) {

@@ -67,8 +67,23 @@ router.get('/show/:groupId', async(req,res) => {
 
     const boards = await cleanboardModel.findByMemberIdAndGroupId(id,groupId,start,end);
     console.log(boards);
-
-    res.status(200).send('ok');
+    data = []
+    for (const b of boards){
+        console.log(b);
+        const member = await memberModel.findById(b.member_id);
+        const json = {"boardId":b.id, "cleanzones":[], "memberName":member.name, "cleantime":b.cleantime, "imageURL":[],"content":b.content };
+        const cleanzone = await joinGroupCleanZoneMemberModel.findJoinBoardGCZMByBoardId(b.id);
+        for (const c of cleanzone){
+            json.cleanzones.push(c.cleanZoneName);
+        }
+        const image = await cleanboardModel.findImageByBoardId(b.id);
+        console.log(image);
+        for (const i of image){
+            json.imageURL.push(i.imageName);
+        }
+        data.push(json);
+    }
+    res.status(200).send(data);
 
 });
 

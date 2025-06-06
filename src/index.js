@@ -46,6 +46,7 @@ app.use('/schedule',authJWT,schedule);
 app.use('/schedule',authJWT,randomschedule);
 app.use('/cleanboard',authJWT, cleanboard);
 app.use('/cleanboard',authJWT, makecleanboard);
+app.use('/uploads', express.static('uploads')); 
 
 // 에러를 JSON으로 응답
 app.use((err, req, res, next) => {

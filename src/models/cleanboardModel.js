@@ -25,6 +25,14 @@ module.exports = class CleanBoardModel{
 
     }
 
+    static async findImageByBoardId(cleanBoardId) {
+        const row= await db.execute(
+            'select * from cleanBoardImage where board_id=?',
+            [cleanBoardId]
+        );
+        return row[0];
+    }
+
     static async findByMemberIdAndGroupId(member_id,group_id, start,end){
         const row =  await db.execute(
             'SELECT * FROM cleanBoard WHERE member_id = ? AND usergroup_id=? AND created_at BETWEEN ? AND ?',

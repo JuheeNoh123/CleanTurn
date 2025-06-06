@@ -40,4 +40,19 @@ module.exports = class cleanZoneGroupMember{
             [this.joinGroupMemberId, this.cleanZoneId]
         );
     }
+
+    static async saveJoinBoardGCZM(cleanBoard_id, cleanZoneName){
+        return await db.execute(
+            'insert into JoinBoardGCZM (cleanBoard_id, cleanZoneName) VALUES (?,?)',
+            [cleanBoard_id, cleanZoneName]
+        );
+    }
+
+    static async findJoinBoardGCZMByBoardId(cleanBoard_id){
+        const row= await db.execute(
+            'select * from JoinBoardGCZM where cleanBoard_id=?',
+            [cleanBoard_id]
+        );
+        return row[0];
+    }
 }
