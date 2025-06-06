@@ -10,6 +10,7 @@ const cleanboardModel = require('../../models/cleanboardModel');
 
 const router = express.Router();
 
+
 //청소 현황 게시판 조회
 router.get('/status/:groupId', async(req,res) => {
     const groupId = req.params.groupId;
@@ -50,7 +51,10 @@ router.get('/status/:groupId', async(req,res) => {
         }
         
     }
-    
+});
+
+//게시판 조회
+router.get('/', async(req,res) => {    
 });
 
 //피드백 조회
