@@ -42,7 +42,7 @@ app.use('/group',authJWT,getgroup);
 app.use('/group',authJWT,cleanZone);
 app.use('/schedule',authJWT,schedule);
 app.use('/schedule',authJWT,randomschedule);
-app.use('/cleanboard',authJWT,cleanboard);
+//app.use('/cleanboard',authJWT,cleanboard);
 //app.use('/makeCleanBoard',authJWT, board);
 
 // 에러를 JSON으로 응답
