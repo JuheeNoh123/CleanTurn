@@ -17,7 +17,7 @@ cron.schedule('52 1 * * *', async () => {
     const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
     const dayName = days[today.getDay()];
     const schedules = await scheduleModel.getAllByDay(dayName);
-    console.log(schedules)
+    console.log(schedules);
     const sendlist = []
     for (const s of schedules){
         console.log(s);
