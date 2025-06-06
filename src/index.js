@@ -16,14 +16,10 @@ const cleanZone = require('./routes/cleanZone/cleanZone');
 
 const schedule = require('./routes/schedule/schedule');
 const randomschedule = require('./routes/schedule/randomschedule');
-<<<<<<< HEAD
-//const cleanboard = require('./routes/feedback/cleanboard');
-//const board = require('./routes/bulletinboard/makeboard');
-=======
 
-const cleanboard = require('./routes/cleanboard/cleanboard');
-const makecleanboard = require('./routes/cleanboard/makeboard');
->>>>>>> a770cfa3ab57594e22ce7f956618305a8fb6cb37
+
+const cleanboard = require('./routes/cleanBoard/cleanboard');
+const makecleanboard = require('./routes/cleanBoard/makeboard');
 
 const app = express();
 app.use(cors({
@@ -47,17 +43,10 @@ app.use('/group',authJWT,AIcleaning);
 app.use('/group',authJWT,getgroup);
 app.use('/group',authJWT,cleanZone);
 app.use('/schedule',authJWT,schedule);
-<<<<<<< HEAD
 app.use('/schedule',authJWT,randomschedule);
-app.use('/cleanboard',authJWT,cleanboard);
-//app.use('/makeCleanBoard',authJWT, board);
-=======
-
 app.use('/cleanboard',authJWT, cleanboard);
 app.use('/cleanboard',authJWT, makecleanboard);
 
-app.use('/schedule',authJWT,randomschedule);
->>>>>>> a770cfa3ab57594e22ce7f956618305a8fb6cb37
 
 // 에러를 JSON으로 응답
 app.use((err, req, res, next) => {

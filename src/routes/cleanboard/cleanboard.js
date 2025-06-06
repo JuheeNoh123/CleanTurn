@@ -54,7 +54,22 @@ router.get('/status/:groupId', async(req,res) => {
 });
 
 //게시판 조회
-router.get('/', async(req,res) => {    
+router.get('/show/:groupId', async(req,res) => { 
+    const groupId  = req.params.groupId; 
+    const {id,email}=req.user;  
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+
+    // 오늘 23:59:59
+    const end = new Date();
+    end.setHours(23, 59, 59, 999);
+    console.log(groupId, id, start, end);
+
+    const boards = await cleanboardModel.findByMemberIdAndGroupId(id,groupId,start,end);
+    console.log(boards);
+
+    res.status(200).send('ok');
+
 });
 
 //피드백 조회

@@ -9,11 +9,27 @@ module.exports = class CleanBoardModel{
         return row[0];
     }
 
-    static async save(imageName, cleanTime, content, member_id) {
+    static async save(cleanTime, content, member_id, group_id) {
         return await db.execute(
-            'insert into cleanboard (imageName, cleanTime, content, member_id) values (?,?,?,?)',
-            [imageName, cleanTime, content, member_id]
+            'insert into cleanboard (cleanTime, content, member_id, usergroup_id) values (?,?,?,?)',
+            [cleanTime, content, member_id,group_id]
         )
 
+    }
+
+    static async saveImage(cleanBoardId, image) {
+        return await db.execute(
+            'insert into cleanBoardImage (board_id, imageName) values (?,?)',
+            [cleanBoardId,image]
+        )
+
+    }
+
+    static async findByMemberIdAndGroupId(member_id,group_id, start,end){
+        const row =  await db.execute(
+            'SELECT * FROM cleanBoard WHERE member_id = ? AND usergroup_id=? AND created_at BETWEEN ? AND ?',
+            [member_id,group_id,start,end]
+        );
+        return row[0];
     }
 }
