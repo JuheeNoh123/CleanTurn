@@ -96,17 +96,24 @@ router.get('/show/:groupId',async(req,res)=>{
     const cleaning = []
     for (const gm of groupMembers[0]){
         let gczm = await joinCleanZoneGroupMemberModel.findByJoinGroupMemberId(gm.id);        
-        gczm  = gczm[0][0];
         console.log(gczm);
+        console.log('=====================');
+        gczm  = gczm[0];
+        console.log("dd",gczm);
         if (gczm){
-            const cleaninfo={};
-            cleaninfo['joinGCZMid']=gczm.id;
-            const cleanZone = await cleanZoneModel.findById(gczm.cleanZone_id);
-            cleaninfo["cleanZone"] = cleanZone.zoneName;
-            const joinGroupMember = await joinGroupMemberModel.findById(gczm.joinGroupMember_id);
-            const member = await memberModel.findById(joinGroupMember[0].member_id);
-            cleaninfo["manager"] = member.name;
-            cleaning.push(cleaninfo);     
+            
+            for (const g of gczm){
+                const cleaninfo={};
+                cleaninfo['joinGCZMid']=g.id;
+                console.log(g);
+                const cleanZone = await cleanZoneModel.findById(g.cleanZone_id);
+                cleaninfo["cleanZone"] = cleanZone.zoneName;
+                const joinGroupMember = await joinGroupMemberModel.findById(g.joinGroupMember_id);
+                const member = await memberModel.findById(joinGroupMember[0].member_id);
+                cleaninfo["manager"] = member.name;
+                cleaning.push(cleaninfo);     
+            }
+            
         }
         else{
             return res.status(400).send('청소구역과 담당자 매칭이 필요합니다.');

@@ -9,7 +9,7 @@ const cleanboardModel = require('../../models/cleanboardModel');
 const cleanZoneModel=require('../../models/cleanZoneModel');
 const router = express.Router();
 const cron = require('node-cron');
-cron.schedule('52 1 * * *', async () => {
+cron.schedule('6 2 * * *', async () => {
 
     const today = new Date();
     const todaySTR = today.toISOString().slice(0, 10);
@@ -60,8 +60,8 @@ cron.schedule('52 1 * * *', async () => {
         console.log(IsWrite);
         if (IsWrite.length==0){
             await sendEmail({
-                //to: e.member.email,
-                to:'juhee10131013@gmail.com',
+                to: e.member.email,
+                //to:'juhee10131013@gmail.com',
                 subject: `[CLEANTURN]  ${e.member.name}님 청소 구역 안내`,
                 html: `
                     <div style="
