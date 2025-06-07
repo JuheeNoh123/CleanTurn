@@ -19,7 +19,7 @@ router.post('/test-clean-score', async (req, res) => {
       console.log(`❌ ${userId}: 게시글 없음 → 점수 ${updatedScore}`);
       await sendEmail({
             //to: e.member.email,
-            to:'juhee10131013@gmail.com',
+            to:'atfqwe80@gmail.com',
             subject: `[CLEANTURN] 🚨 ${c.member.name}님 청소도 하락 알림`,
             html: `<table style="width: 100%; max-width: 600px; margin: auto; font-family: 'Arial', sans-serif; background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 24px;">
                     <tr>
