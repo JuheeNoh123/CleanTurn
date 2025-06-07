@@ -35,13 +35,13 @@ router.get('/status/:groupId', async(req,res) => {
                     "cleanzone":sl.cleanzone.zoneName,
                     "isCleaned":sl.isCleaned
                     }
-            
+            data.push(json);
         }
         if(sl.member.id==id && !sl.isCleaned){
             uploadButton = true;
         }
         
-        data.push(json);
+        
     }
     data.push({"uploadButton": uploadButton});
     res.status(200).send(data);
