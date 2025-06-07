@@ -46,7 +46,7 @@ const getTodayCleanList = async (groupId = null) => {
         const member = await memberModel.findById(joinGroupMember[0].member_id);
         const alreadyInList = sendlist.find(e => e.member.id === member.id);
         if (!alreadyInList) {
-            const IsWrite = await cleanboardModel.findByMemberId(member.id);
+            const IsWrite = await cleanboardModel.findByMemberIdAndGroupId(member.id, joinGroupMember[0].group_id);
             sendlist.push({
                 groupId: joinGroupMember[0].group_id,
                 cleanzone: cleanZoneName,
