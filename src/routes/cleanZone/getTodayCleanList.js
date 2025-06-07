@@ -11,7 +11,7 @@ require("dayjs/plugin/timezone");
 dayjs.extend(require("dayjs/plugin/utc"));
 dayjs.extend(require("dayjs/plugin/timezone"));
 
-const getTodayCleanList = async () => {
+const getTodayCleanList = async (groupId = null) => {
     const today = dayjs().tz("Asia/Seoul"); // dayjs 객체
     const todaySTR = today.format("YYYY-MM-DD"); // MySQL 날짜 조회용
     console.log("오늘 날짜:", todaySTR);
@@ -28,7 +28,8 @@ const getTodayCleanList = async () => {
         const cleanZoneName = await cleanZoneModel.findById(joinGroupCleanZoneMember[0].cleanZone_id);
         const joinGroupMember = await joinGroupMemberModel.findById(joinGroupCleanZoneMember[0].joinGroupMember_id);
         const member = await memberModel.findById(joinGroupMember[0].member_id);
-        const IsWrite = await cleanboardModel.findByMemberId(member.id);
+        const IsWrite = await cleanboardModel.findByMemberIdAndGroupId(member.id, joinGroupMember[0].group_id)
+        
         sendlist.push({
             groupId: joinGroupMember[0].group_id,
             cleanzone: cleanZoneName,

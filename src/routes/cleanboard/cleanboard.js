@@ -25,8 +25,9 @@ const router = express.Router();
 router.get('/status/:groupId', async(req,res) => {
     const {id,email} = req.user;
     console.log(id);
-    const sendlist = await getTodayCleanList();
     const groupId = req.params.groupId;
+    const sendlist = await getTodayCleanList(groupId);
+    
     console.log(sendlist);
     data = []
     let uploadButton = false;
