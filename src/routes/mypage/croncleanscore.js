@@ -8,6 +8,7 @@ const sendEmail = require('../../util/sendmail');
 
 cron.schedule('59 23 * * *', async () => {
     //오늘 청소 해야하는 담당자&구역 정보
+    const userId = c.member.id;
     const result = await getTodayCleanList();
     for (const c of result){
         if (c.isCleaned === false) {
