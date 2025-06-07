@@ -18,8 +18,8 @@ const schedule = require('./routes/schedule/schedule');
 const randomschedule = require('./routes/schedule/randomschedule');
 
 
-const cleanboard = require('./routes/cleanBoard/cleanboard');
-const makecleanboard = require('./routes/cleanBoard/makeboard');
+const cleanboard = require('./routes/cleanboard/cleanboard');
+const makecleanboard = require('./routes/cleanboard/makeboard');
 
 const app = express();
 app.use(cors({
