@@ -87,28 +87,28 @@ function assignCleanZonesToMembers(cleanZones, members) {
   const memberArray = Object.values(members);
 
   // 셔플
-  const shuffledZones = shuffle(cleanZoneArray);
+  //const shuffledZones = shuffle(cleanZoneArray);
   const shuffledMembers = shuffle(memberArray);
 
   const result = [];
 
   // 1차: 각 멤버에게 최소 하나씩 배정
-  const minAssignCount = Math.min(shuffledZones.length, shuffledMembers.length);
+  const minAssignCount = Math.min(cleanZoneArray.length, shuffledMembers.length);
   for (let i = 0; i < minAssignCount; i++) {
     result.push({
-      cleanZoneId: shuffledZones[i].cleanZoneId,
-      zoneName: shuffledZones[i].zoneName,
+      cleanZoneId: cleanZoneArray[i].cleanZoneId,
+      zoneName: cleanZoneArray[i].zoneName,
       memberId: shuffledMembers[i].memberId,
       memberName: shuffledMembers[i].name
     });
   }
 
   // 2차: 남은 청소 구역 있으면 랜덤 멤버에게 추가 배정
-  for (let i = minAssignCount; i < shuffledZones.length; i++) {
+  for (let i = minAssignCount; i < cleanZoneArray.length; i++) {
     const randomMember = memberArray[Math.floor(Math.random() * memberArray.length)];
     result.push({
-      cleanZoneId: shuffledZones[i].cleanZoneId,
-      zoneName: shuffledZones[i].zoneName,
+      cleanZoneId: cleanZoneArray[i].cleanZoneId,
+      zoneName: cleanZoneArray[i].zoneName,
       memberId: randomMember.memberId,
       memberName: randomMember.name
     });
