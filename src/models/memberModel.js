@@ -49,4 +49,11 @@ module.exports = class Member {
             throw err;
         }
     }
+
+    static async updateCleaningScore(memberId,cleaningScore){
+        return await db.execute(
+                'UPDATE member SET cleaningScore = ? WHERE id = ?',
+                [cleaningScore,memberId]
+            )
+    }
 };

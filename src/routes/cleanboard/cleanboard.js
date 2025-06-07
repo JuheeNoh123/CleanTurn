@@ -29,6 +29,7 @@ router.get('/status/:groupId', async(req,res) => {
         let json = {}
         if(sl.groupId==groupId){
             json ={
+                    "memberId":sl.member.id,
                     "name":sl.member.name,
                     "cleanzone":sl.cleanzone.zoneName,
                     "isCleaned":sl.isCleaned
