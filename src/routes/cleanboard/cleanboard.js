@@ -32,7 +32,6 @@ router.get('/getallfeedback/:cleanBoard_id', async(req,res) => {
         console.log(error);
         return res.status(500).send({message: '서버오류'});
     }
-
 });
 
 //피드백 작성
