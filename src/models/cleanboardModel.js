@@ -33,10 +33,10 @@ module.exports = class CleanBoardModel{
         return row[0];
     }
 
-    static async findByMemberIdAndGroupId(member_id,group_id, start,end){
+    static async findByGroupIdAndDate(group_id, start,end){
         const row =  await db.execute(
-            'SELECT * FROM cleanBoard WHERE member_id = ? AND usergroup_id=? AND created_at BETWEEN ? AND ?',
-            [member_id,group_id,start,end]
+            'SELECT * FROM cleanBoard WHERE usergroup_id=? AND created_at BETWEEN ? AND ?',
+            [group_id,start,end]
         );
         return row[0];
     }
