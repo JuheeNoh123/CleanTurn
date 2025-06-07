@@ -7,10 +7,18 @@ module.exports = class scheduleModel{
         );
     }
 
-    static async findByGCZMAndDay(joincleanzonegroupmember_id){
+    static async findByGCZM(joincleanzonegroupmember_id){
         const row =  await db.execute(
             'select * from schedule where joincleanzonegroupmember_id=?',
             [joincleanzonegroupmember_id]
+        );
+        return row[0];
+    }
+
+    static async findByGCZMAndDay(joincleanzonegroupmember_id, repeatDay){
+        const row =  await db.execute(
+            'select * from schedule where joincleanzonegroupmember_id=? and repeatDay = ?',
+            [joincleanzonegroupmember_id,repeatDay]
         );
         return row[0];
     }
@@ -19,6 +27,14 @@ module.exports = class scheduleModel{
         const row =  await db.execute(
             'delete from schedule where joincleanzonegroupmember_id=?',
             [joincleanzonegroupmember_id]
+        );
+        return row[0];
+    }
+
+    static async getAllByDay(day){
+        const row =  await db.execute(
+            'select * from schedule where repeatday=?',
+            [day]
         );
         return row[0];
     }

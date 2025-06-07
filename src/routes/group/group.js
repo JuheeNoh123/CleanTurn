@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userGroup = require('../../models/userGroupModel')
-const JoinGroupMember = require('../../models/JoinGroupMemberModel')
+const JoinGroupMember = require('../../models/joinGroupMemberModel')
 const Member = require('../../models/memberModel');
 
 router.get('/getall',async(req,res)=>{

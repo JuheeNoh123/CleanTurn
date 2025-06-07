@@ -1,8 +1,8 @@
 const express = require('express');
 const scheduleModel = require('../../models/scheduleModel'); 
 const specialScheduleModel = require('../../models/specialSchedule');
-const joinCleanZoneGroupMemberModel = require('../../models/JoinCleanZoneGroupMember');
-const joinGroupMemberModel = require('../../models/JoinGroupMemberModel');
+const joinCleanZoneGroupMemberModel = require('../../models/joinCleanZoneGroupMember');
+const joinGroupMemberModel = require('../../models/joinGroupMemberModel');
 const memberModel = require('../../models/memberModel');
 const cleanZoneModel = require('../../models/cleanZoneModel');
 const router = express.Router();
@@ -96,17 +96,24 @@ router.get('/show/:groupId',async(req,res)=>{
     const cleaning = []
     for (const gm of groupMembers[0]){
         let gczm = await joinCleanZoneGroupMemberModel.findByJoinGroupMemberId(gm.id);        
-        gczm  = gczm[0][0];
         console.log(gczm);
+        console.log('=====================');
+        gczm  = gczm[0];
+        console.log("dd",gczm);
         if (gczm){
-            const cleaninfo={};
-            cleaninfo['joinGCZMid']=gczm.id;
-            const cleanZone = await cleanZoneModel.findById(gczm.cleanZone_id);
-            cleaninfo["cleanZone"] = cleanZone.zoneName;
-            const joinGroupMember = await joinGroupMemberModel.findById(gczm.joinGroupMember_id);
-            const member = await memberModel.findById(joinGroupMember[0].member_id);
-            cleaninfo["manager"] = member.name;
-            cleaning.push(cleaninfo);     
+            
+            for (const g of gczm){
+                const cleaninfo={};
+                cleaninfo['joinGCZMid']=g.id;
+                console.log(g);
+                const cleanZone = await cleanZoneModel.findById(g.cleanZone_id);
+                cleaninfo["cleanZone"] = cleanZone.zoneName;
+                const joinGroupMember = await joinGroupMemberModel.findById(g.joinGroupMember_id);
+                const member = await memberModel.findById(joinGroupMember[0].member_id);
+                cleaninfo["manager"] = member.name;
+                cleaning.push(cleaninfo);     
+            }
+            
         }
         else{
             return res.status(400).send('청소구역과 담당자 매칭이 필요합니다.');
@@ -135,7 +142,7 @@ router.get('/show/:groupId',async(req,res)=>{
 
 
     for (const i of cleaning){
-        const scheduleMagagerInfo = await scheduleModel.findByGCZMAndDay(i.joinGCZMid)
+        const scheduleMagagerInfo = await scheduleModel.findByGCZM(i.joinGCZMid)
         for (const s of scheduleMagagerInfo){
             const dayIndex = repeatDayMap[s.repeatDay];
             if (dayIndex !== undefined && !schedule[dayIndex].includes(s.joinCleanZoneGroupMember_id)) {

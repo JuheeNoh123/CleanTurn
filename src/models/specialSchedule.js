@@ -14,11 +14,26 @@ module.exports = class specialScheduleModel{
         );
         return row[0];
     }
+    static async findByDateAndJGCZM(date, jgczm_id){
+        const row = await db.execute(
+            'select * from specialSchedule where cleanDate=? and joinCleanZoneGroupMember_id=?',
+            [date,jgczm_id]
+        );
+        return row[0];
+    }
 
     static async deleteByJoinGCZMId(joincleanzonegroupmember_id){
         const row =  await db.execute(
             'delete from specialSchedule where joincleanzonegroupmember_id=?',
             [joincleanzonegroupmember_id]
+        );
+        return row[0];
+    }
+
+    static async getAllByDate(cleanDate){
+        const row =  await db.execute(
+            'select * from specialschedule where cleanDate=?',
+            [cleanDate]
         );
         return row[0];
     }

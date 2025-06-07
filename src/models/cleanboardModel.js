@@ -1,8 +1,6 @@
 const db = require('../util/mysql')
 
-
-module.exports = class cleanboard {
-    //게시판 조회
+module.exports = class CleanBoardModel{
     static async findByMemberId(member_id){
         const row =  await db.execute(
             'select * from cleanBoard where member_id=?',
@@ -41,6 +39,5 @@ module.exports = class cleanboard {
             [member_id,group_id,start,end]
         );
         return row[0];
-
     }
 }

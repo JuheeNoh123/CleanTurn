@@ -1,5 +1,6 @@
 // app.js
 require('dotenv').config();
+require('./routes/cleanZone/cronmail');
 const express = require('express');
 const cors = require('cors')
 const login = require('./routes/signInOut/login');
@@ -16,8 +17,9 @@ const cleanZone = require('./routes/cleanZone/cleanZone');
 const schedule = require('./routes/schedule/schedule');
 const randomschedule = require('./routes/schedule/randomschedule');
 
-const cleanboard = require('./routes/cleanboard/cleanboard');
-const makecleanboard = require('./routes/cleanboard/makeboard');
+
+const cleanboard = require('./routes/cleanBoard/cleanboard');
+const makecleanboard = require('./routes/cleanBoard/makeboard');
 
 const app = express();
 app.use(cors({
@@ -29,6 +31,7 @@ app.use(express.urlencoded({ extended: true })); // Form 데이터 파싱
 
 // 정적 파일 & 라우팅
 // 기본 응답
+
 app.get('/', (req, res) => res.send('Hello World!'));
 app.use('/login', login);
 app.use('/signup', signup);
@@ -40,11 +43,10 @@ app.use('/group',authJWT,AIcleaning);
 app.use('/group',authJWT,getgroup);
 app.use('/group',authJWT,cleanZone);
 app.use('/schedule',authJWT,schedule);
-
+app.use('/schedule',authJWT,randomschedule);
 app.use('/cleanboard',authJWT, cleanboard);
 app.use('/cleanboard',authJWT, makecleanboard);
-
-app.use('/schedule',authJWT,randomschedule);
+app.use('/uploads', express.static('uploads')); 
 
 // 에러를 JSON으로 응답
 app.use((err, req, res, next) => {
