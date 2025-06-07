@@ -1,6 +1,7 @@
 // app.js
 require('dotenv').config();
 require('./routes/cleanZone/cronmail');
+require('./routes/mypage/croncleanscore');
 const express = require('express');
 const cors = require('cors')
 const login = require('./routes/signInOut/login');
@@ -13,10 +14,10 @@ const group = require('./routes/group/makegroup');
 const AIcleaning = require('./routes/group/AIcleaning');
 const getgroup = require('./routes/group/group');
 const cleanZone = require('./routes/cleanZone/cleanZone');
-
+const testcleanscore = require('./routes/mypage/test-cleanscore');
 const schedule = require('./routes/schedule/schedule');
 const randomschedule = require('./routes/schedule/randomschedule');
-
+const resetCleanStreak = require('./util/resetCleanStreak');
 
 const cleanboard = require('./routes/cleanboard/cleanboard');
 const makecleanboard = require('./routes/cleanboard/makeboard');
@@ -48,13 +49,18 @@ app.use('/cleanboard',authJWT, cleanboard);
 app.use('/cleanboard',authJWT, makecleanboard);
 app.use('/uploads', express.static('uploads')); 
 
+app.use('/',testcleanscore);
+
 // 에러를 JSON으로 응답
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ ok: false, message: err.message });
 });
 const { redisClient, connectRedis } = require('./util/redis');
-connectRedis().then(() => {
+connectRedis().then(async() => {
+  if (process.env.NODE_ENV === 'development') {
+      await resetCleanStreak();
+    }
   app.listen(8000, () => console.log('App running on port 8000...'));
 }).catch((err) => {
   console.error('Redis connection failed:', err);
