@@ -1,6 +1,5 @@
 const express = require('express');
 
-
 const feedbackModel = require("../../models/feedbackModel");
 const cleanboardModel = require("../../models/cleanboardModel");
 const Member = require("../../models/memberModel");
@@ -11,11 +10,6 @@ const specialScheduleModel = require('../../models/specialSchedule');
 const joinGroupCleanZoneMemberModel = require('../../models/joinCleanZoneGroupMember');
 const joinGroupMemberModel = require('../../models/joinGroupMemberModel');
 
-const memberModel = require('../../models/memberModel'); 
-const joinGroupCleanZoneMemberModel = require('../../models/joinCleanZoneGroupMember');
-const cleanboardModel = require('../../models/cleanboardModel');
-const feedbackModel = require("../../models/feedbackModel");
-const Member = require("../../models/memberModel");
 const getTodayCleanList = require('../cleanZone/getTodayCleanList');
 
 const dayjs = require('dayjs');
