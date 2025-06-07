@@ -9,6 +9,14 @@ module.exports = class CleanBoardModel{
         return row[0];
     }
 
+    static async findByMemberIdAndGroupId(member_id, group_id){
+        const row =  await db.execute(
+            'select * from cleanBoard where member_id=? and usergroup_id=?',
+            [member_id,group_id]
+        );
+        return row[0];
+    }
+
     static async save(cleanTime, content, member_id, group_id) {
         return await db.execute(
             'insert into cleanboard (cleanTime, content, member_id, usergroup_id) values (?,?,?,?)',
