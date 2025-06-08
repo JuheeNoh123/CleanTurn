@@ -78,7 +78,8 @@ function mapScheduleToInfo(scheduleMap, cleaningList) {
 
 
 router.get('/show/:groupId',async(req,res)=>{
-    const dates = generateDateList(req.body.startDate, req.body.endDate);
+    const { startDate, endDate } = req.query;
+    const dates = generateDateList(startDate, endDate);
     const groupId = req.params.groupId;
     const schedule = {
     0: [],
