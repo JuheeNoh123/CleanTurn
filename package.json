@@ -18,6 +18,7 @@
   "homepage": "https://github.com/JuheeNoh123/CleanTurn#readme",
   "description": "",
   "dependencies": {
+    "axios": "^1.9.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",

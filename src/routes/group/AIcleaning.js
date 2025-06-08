@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { callGPT } = require('../gpt/gpt');
+const { callAI } = require('../gpt/cohere');
 router.get('/AIcleanlist',async(req,res)=>{
-    const response = await callGPT();
+    const response = await callAI();
     if(response){
         const str = response.content;
         const areas = str.split(', ');
