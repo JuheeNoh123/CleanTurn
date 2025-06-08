@@ -68,7 +68,7 @@ router.get('/show/:groupId', async(req,res) => {
             boardId: b.id,
             cleanzones: [],
             memberName: member.name,
-            cleantime: b.cleantime,
+            cleantime: b.cleanTime,
             imageURL: [],
             content: b.content
         };
