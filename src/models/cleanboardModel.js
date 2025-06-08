@@ -48,4 +48,9 @@ module.exports = class CleanBoardModel{
         );
         return row[0];
     }
+
+    static async getAll(){
+        const row = await db.execute('SELECT * FROM cleanBoard');
+        return row[0];
+    }
 }
