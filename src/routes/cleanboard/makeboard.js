@@ -53,7 +53,10 @@ router.post('/make/:groupId', upload.array('images', 2), async(req,res)=>{
             cleanzoneIdList.push(jgczm.cleanZone_id);
         }
 
-        const specialschedules = await specialScheduleModel.findByDateAndJGCZM(today.toISOString().split('T')[0],jgczm.id );
+        const todayDate = today.format('YYYY-MM-DD');
+        const specialschedules = await specialScheduleModel.findByDateAndJGCZM(todayDate, jgczm.id);
+
+        //const specialschedules = await specialScheduleModel.findByDateAndJGCZM(today.toISOString().split('T')[0],jgczm.id );
         console.log("specialschedules ",specialschedules);
         if (specialschedules.length>0 && !cleanzoneIdList.includes(jgczm.cleanZone_id)){
             cleanzoneIdList.push(jgczm.cleanZone_id);

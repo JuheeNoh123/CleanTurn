@@ -19,7 +19,7 @@ const schedule = require('./routes/schedule/schedule');
 const randomschedule = require('./routes/schedule/randomschedule');
 const resetCleanStreak = require('./util/resetCleanStreak');
 
-const cleanboard = require('./routes/cleanBoard/cleanboard');
+const cleanboard = require('./routes/cleanboard/cleanboard');
 const makecleanboard = require('./routes/cleanBoard/makeboard');
 
 const app = express();

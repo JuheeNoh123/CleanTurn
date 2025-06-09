@@ -27,6 +27,7 @@ router.get('/status/:groupId', async(req,res) => {
     data = []
     let uploadButton = false;
     for(const sl of sendlist){
+        console.log("sl",sl)
         // 그룹이 일치하는 데이터만 포함
         if (sl.groupId == groupId) {
             data.push({
@@ -51,7 +52,7 @@ router.get('/status/:groupId', async(req,res) => {
 
 //게시판 조회
 router.get('/show/:groupId', async(req,res) => { 
-    const groupId = req.params.groupId; 
+    try {const groupId = req.params.groupId; 
     const { id, email } = req.user;  
 
     const start = dayjs().tz("Asia/Seoul").startOf('day').format('YYYY-MM-DD HH:mm:ss');
@@ -76,6 +77,7 @@ router.get('/show/:groupId', async(req,res) => {
         };
 
         const cleanzone = await joinGroupCleanZoneMemberModel.findJoinBoardGCZMByBoardId(b.id);
+        console.log(cleanzone);
         for (const c of cleanzone) {
             json.cleanzones.push(c.cleanZoneName);
         }
@@ -89,7 +91,13 @@ router.get('/show/:groupId', async(req,res) => {
         data.push(json);
     }
 
-    res.status(200).send(data);
+    res.status(200).send(data);}
+    catch (e) {
+        console.error(e);
+        res.status(500)
+           .header("Access-Control-Allow-Origin", "*")
+           .send({ error: "서버 오류 발생" });
+    }
 
 });
 
