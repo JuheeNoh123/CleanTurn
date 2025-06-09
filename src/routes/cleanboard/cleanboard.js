@@ -27,22 +27,24 @@ router.get('/status/:groupId', async(req,res) => {
     data = []
     let uploadButton = false;
     for(const sl of sendlist){
-        let json = {}
-        if(sl.groupId==groupId){
-            json ={
-                    "memberId":sl.member.id,
-                    "name":sl.member.name,
-                    "cleanzone":sl.cleanzone.zoneName,
-                    "isCleaned":sl.isCleaned
-                    }
-            data.push(json);
+        // 그룹이 일치하는 데이터만 포함
+        if (sl.groupId == groupId) {
+            data.push({
+                memberId: sl.member.id,
+                name: sl.member.name,
+                cleanzone: sl.cleanzone.zoneName,
+                isCleaned: sl.isCleaned
+            });
+
+            // 내 담당 청소구역이면서 아직 청소 안한 경우만 true
+            if (sl.member.id == id && !sl.isCleaned) {
+                uploadButton = true;
+            }
         }
-        if(sl.member.id==id && !sl.isCleaned){
-            uploadButton = true;
-        }
-        
-        
     }
+        
+        
+    
     data.push({"uploadButton": uploadButton});
     res.status(200).send(data);
 });

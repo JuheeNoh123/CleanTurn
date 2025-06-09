@@ -7,8 +7,9 @@ module.exports = class Member {
         this.pw = pw;
     }
 
+    // 회원 정보 저장 (비밀번호 해싱 포함)
     async save() {
-	    // 비밀번호 해싱
+	// 비밀번호 해싱
     const hashedPassword = await bcrypt.hash(this.pw, 10); // 두 번째 매개변수는 salt의 자릿
 
     // INSERT INTO table-name : 지정 column-name 순 번으로, row-data를 생성합니다. 
@@ -36,6 +37,7 @@ module.exports = class Member {
         }
     }
 
+    // ID로 회원 조회
     static async findById(id){
         try{
             const res = await db.execute(
@@ -50,6 +52,7 @@ module.exports = class Member {
         }
     }
 
+    // 청소 점수 수정
     static async updateCleaningScore(memberId,cleaningScore){
         return await db.execute(
                 'UPDATE member SET cleaningScore = ? WHERE id = ?',

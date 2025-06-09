@@ -5,27 +5,29 @@ const joinGroupMemberModel = require('../../models/joinGroupMemberModel');
 const joinGroupCleanZoneMemberModel = require('../../models/joinCleanZoneGroupMember');
 const cleanboardModel = require('../../models/cleanboardModel');
 const cleanZoneModel = require('../../models/cleanZoneModel');
+// 날짜/시간 라이브러리 설정
 const dayjs = require('dayjs');
 require("dayjs/plugin/utc");
 require("dayjs/plugin/timezone");
 dayjs.extend(require("dayjs/plugin/utc"));
 dayjs.extend(require("dayjs/plugin/timezone"));
-
+//해당 청소구역이 오늘 청소 완료되었는지 확인
 const checkIsCleaned = async (cleanZoneName, boards, targetGroupId) => {
     console.log(cleanZoneName);
     for (const c of boards) {
-        if (c.usergroup_id != targetGroupId) continue; // 🔥 그룹 검사 추가
+        if (c.usergroup_id != targetGroupId) continue; // 그룹 검사 추가
         console.log(c);
         const joinBoardczgm = await joinGroupCleanZoneMemberModel.findJoinBoardGCZMByBoardId(c.id);
         for (const b of joinBoardczgm) {
             if (b.cleanZoneName === cleanZoneName.zoneName) {
-                return true;
+                return true;// 게시글에 해당 청소구역이 포함되면 완료된 것으로 간주
             }
         }
     }
     return false;
 };
 
+//스케줄 아이템 처리 함수 - 청소 담당자, 구역, 완료 여부 정보 반환
 const processScheduleItem = async (scheduleItem, boards, targetGroupId) => {
     const joinGroupCleanZoneMember = await joinGroupCleanZoneMemberModel.findById(scheduleItem.joinCleanZoneGroupMember_id);
     const cleanZoneName = await cleanZoneModel.findById(joinGroupCleanZoneMember[0].cleanZone_id);
@@ -42,15 +44,17 @@ const processScheduleItem = async (scheduleItem, boards, targetGroupId) => {
     };
 };
 
+//오늘의 청소 리스트 조회 함수
 const getTodayCleanList = async (groupId = null) => {
     const today = dayjs().tz("Asia/Seoul");
     const todaySTR = today.format("YYYY-MM-DD");
     const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-    const dayName = days[today.day()];
+    const dayName = days[today.day()];// 오늘 요일 이름 (ex. "MONDAY")
 
-    const sendlist = [];
-    const boards = await cleanboardModel.getAll();
+    const sendlist = [];// 최종 반환 리스트
+    const boards = await cleanboardModel.getAll();// 모든 청소 인증 게시글 조회
 
+    // 일반 스케줄 처리
     const schedules = await scheduleModel.getAllByDay(dayName);
     for (const s of schedules) {
         const task = await processScheduleItem(s, boards, groupId);
@@ -58,12 +62,13 @@ const getTodayCleanList = async (groupId = null) => {
         sendlist.push(task);
     }
 
+    // 특별 스케줄 처리 (오늘 날짜에 해당하는 경우만)
     const specialSchedules = await speciaScheduleModel.getAllByDate(todaySTR);
     for (const s of specialSchedules) {
         const joinGroupCleanZoneMember = await joinGroupCleanZoneMemberModel.findById(s.joinCleanZoneGroupMember_id);
         const cleanZoneName = await cleanZoneModel.findById(joinGroupCleanZoneMember[0].cleanZone_id);
         const alreadyInList = sendlist.find(e => e.cleanzone.id === cleanZoneName.id);
-        
+        // 이미 일반 스케줄에 포함되어 있다면 중복 추가 방지
         if (!alreadyInList) {
             const task = await processScheduleItem(s, boards,groupId);
             sendlist.push(task);
