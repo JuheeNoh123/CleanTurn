@@ -13,19 +13,20 @@ dayjs.extend(require("dayjs/plugin/utc"));
 dayjs.extend(require("dayjs/plugin/timezone"));
 //해당 청소구역이 오늘 청소 완료되었는지 확인
 const checkIsCleaned = async (cleanZoneName, boards, targetGroupId) => {
-    console.log(cleanZoneName);
     for (const c of boards) {
-        if (c.usergroup_id != targetGroupId) continue; // 그룹 검사 추가
-        console.log(c);
+        if (targetGroupId !== null && c.usergroup_id != targetGroupId) continue; // 그룹 검사 조건은 groupId가 있을 때만 적용
+
         const joinBoardczgm = await joinGroupCleanZoneMemberModel.findJoinBoardGCZMByBoardId(c.id);
+
         for (const b of joinBoardczgm) {
-            if (b.cleanZoneName === cleanZoneName.zoneName) {
-                return true;// 게시글에 해당 청소구역이 포함되면 완료된 것으로 간주
+            if (b.cleanZoneName.trim() === cleanZoneName.zoneName.trim()) {
+                return true;
             }
         }
     }
     return false;
 };
+
 
 //스케줄 아이템 처리 함수 - 청소 담당자, 구역, 완료 여부 정보 반환
 const processScheduleItem = async (scheduleItem, boards, targetGroupId) => {

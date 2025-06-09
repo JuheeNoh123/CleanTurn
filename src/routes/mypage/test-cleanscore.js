@@ -11,7 +11,7 @@ router.post('/test-clean-score', async (req, res) => {
 
   for (const c of result) {
     const userId = c.member.id;
-
+    //console.log(c);
     if (c.isCleaned === false) {
       await redisClient.del(`clean:streak:${userId}`);
       const updatedScore = Math.max(c.member.cleaningScore - 10, 0);
@@ -66,7 +66,7 @@ router.post('/test-clean-score', async (req, res) => {
                         </td>
                     </tr>
                     </table>`});
-        }
+       }
     }
   }
 

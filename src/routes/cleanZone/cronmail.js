@@ -3,7 +3,7 @@ const sendEmail = require('../../util/sendmail');
 const getTodayCleanList = require('./getTodayCleanList');
 const router = express.Router();
 const cron = require('node-cron');
-cron.schedule('0 9 * * *', async () => {
+cron.schedule('36 4 * * *', async () => {
     const sendlist = await getTodayCleanList(); 
     
     console.log(sendlist);
