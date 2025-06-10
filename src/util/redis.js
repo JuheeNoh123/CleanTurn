@@ -1,4 +1,4 @@
-// util/redis.js
+// Redis 설정
 const redis = require('redis');
 
 const redisClient = redis.createClient({
@@ -8,7 +8,7 @@ const redisClient = redis.createClient({
 redisClient.on('error', (err) => {
   console.error('Redis Client Error', err);
 });
-
+// Redis 연결 함수
 const connectRedis = async () => {
   if (!redisClient.isOpen) {
     await redisClient.connect();

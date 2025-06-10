@@ -1,22 +1,27 @@
 
 const express = require('express');
 const cron = require('node-cron');
-const { redisClient } = require('../../util/redis');
-const memberModel = require('../../models/memberModel');
+const { redisClient } = require('../../util/redis'); // Redis 클라이언트
+const memberModel = require('../../models/memberModel');// 사용자 모델
 const router = express.Router();
-const getTodayCleanList = require('../cleanZone/getTodayCleanList');
-const sendEmail = require('../../util/sendmail');
+const getTodayCleanList = require('../cleanZone/getTodayCleanList');// 오늘 청소할 사용자 목록 조회
+const sendEmail = require('../../util/sendmail');// 이메일 전송 유틸
+// 테스트용 POST 라우트 (강제 청소 점수 업데이트 트리거)
 router.post('/test-clean-score', async (req, res) => {
   const result = await getTodayCleanList();
 
   for (const c of result) {
-    const userId = c.member.id;
+    const userId = c.member.id; // 오늘 청소 담당자 및 수행 여부 목록 조회
     //console.log(c);
+
+    // 게시글을 올리지 않은 경우
     if (c.isCleaned === false) {
       await redisClient.del(`clean:streak:${userId}`);
       const updatedScore = Math.max(c.member.cleaningScore - 10, 0);
       await memberModel.updateCleaningScore(userId, updatedScore);
       console.log(`❌ ${userId}: 게시글 없음 → 점수 ${updatedScore}`);
+      
+      // 이메일로 청소도 하락 알림 전송
       await sendEmail({
             //to: e.member.email,
             to:'juhee10131013@gmail.com',
@@ -38,17 +43,20 @@ router.post('/test-clean-score', async (req, res) => {
                     </tr>
                     </table>`});
     } else {
+      // 게시글을 올린 경우
       const newStreak = await redisClient.incr(`clean:streak:${userId}`);
       console.log(`✅ ${userId}: streak ${newStreak}`);
 
+       // streak가 3이면 점수 10점 상승 및 streak 초기화
       if (parseInt(newStreak) >= 3) {
         const updatedScore = Math.min(c.member.cleaningScore + 10, 100);
         await memberModel.updateCleaningScore(userId, updatedScore);
         await redisClient.del(`clean:streak:${userId}`);
         console.log(`🎉 ${userId}: streak 3 → 점수 ${updatedScore}`);
+        // 이메일로 청소도 상승 알림 전송
         await sendEmail({
             //to: e.member.email,
-            to:'juhee10131013@gmail.com',
+            to:'juhee10131013@gmail.com',// 테스트용 이메일
             subject: `[CLEANTURN] 🎉 ${c.member.name}님 청소도 상승 안내`,
             html: `<table style="width: 100%; max-width: 600px; margin: auto; font-family: 'Arial', sans-serif; background: #f6ffed; border: 1px solid #b7eb8f; border-radius: 10px; padding: 24px;">
                     <tr>
@@ -70,6 +78,6 @@ router.post('/test-clean-score', async (req, res) => {
     }
   }
 
-  res.json({ message: '테스트 실행 완료' });
+  res.json({ message: '테스트 실행 완료' }); // 테스트 완료 응답
 });
 module.exports = router;

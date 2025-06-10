@@ -1,3 +1,4 @@
+//JWT 관련 유틸
 require('dotenv').config(); 
 const { promisify } = require('util');
 const jwt = require('jsonwebtoken');

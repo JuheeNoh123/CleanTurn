@@ -1,7 +1,7 @@
-// app.js
+// app.js: 전체 앱 설정 및 서버 실행
 require('dotenv').config();
-require('./routes/cleanZone/cronmail');
-require('./routes/mypage/croncleanscore');
+require('./routes/cleanZone/cronmail');// 청소 알림용 크론
+require('./routes/mypage/croncleanscore');// 청소 점수 크론
 const express = require('express');
 const cors = require('cors')
 const login = require('./routes/signInOut/login');
@@ -23,6 +23,7 @@ const cleanboard = require('./routes/cleanboard/cleanboard');
 const makecleanboard = require('./routes/cleanboard/makeboard');
 
 const app = express();
+// CORS 설정
 app.use(cors({
   origin: true, // 허용할 도메인
   credentials: true
@@ -30,9 +31,8 @@ app.use(cors({
 app.use(express.json()); // JSON 데이터 파싱
 app.use(express.urlencoded({ extended: true })); // Form 데이터 파싱
 
-// 정적 파일 & 라우팅
-// 기본 응답
 
+// 라우팅 설정
 app.get('/', (req, res) => res.send('Hello World!'));
 app.use('/login', login);
 app.use('/signup', signup);
@@ -51,15 +51,17 @@ app.use('/uploads', express.static('uploads'));
 
 app.use('/',testcleanscore);
 
-// 에러를 JSON으로 응답
+// 에러 핸들러
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ ok: false, message: err.message });
 });
+
+// Redis 연결 후 서버 실행
 const { redisClient, connectRedis } = require('./util/redis');
 connectRedis().then(async() => {
   if (process.env.NODE_ENV === 'development') {
-      await resetCleanStreak();
+      await resetCleanStreak(); // 개발 환경에서 streak 초기화
     }
   app.listen(8000, () => console.log('App running on port 8000...'));
 }).catch((err) => {

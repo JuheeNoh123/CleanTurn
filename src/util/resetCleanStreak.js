@@ -1,4 +1,4 @@
-// utils/resetCleanStreak.js
+// Redis clean streak 초기화 유틸
 const { redisClient } = require('../util/redis');
 
 const resetCleanStreak = async () => {

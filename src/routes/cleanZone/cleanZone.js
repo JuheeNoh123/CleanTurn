@@ -6,6 +6,8 @@ const JoinGroupMemberModel = require('../../models/joinGroupMemberModel');
 const MemberModel = require('../../models/memberModel');
 
 const router = express.Router();
+
+// [GET] 특정 그룹의 청소 구역과 담당자 정보 조회
 router.get('/cleanzone/show/:groupId',async(req,res)=>{
     const groupId = req.params.groupId;
     const cleanZones = await CleanZoneModel.findByGroupId(groupId);
@@ -21,6 +23,7 @@ router.get('/cleanzone/show/:groupId',async(req,res)=>{
             data.push({'id':joinCZGM[0].id,'cleanZoneId':cleanZone.id, 'zoneName': cleanZone.zoneName, "member": member.name});
         }
         else{
+            // 담당자가 없을 경우 null
             data.push({'id':null,'cleanZoneId':cleanZone.id, 'zoneName': cleanZone.zoneName, "member": null});
         }
         
@@ -30,9 +33,11 @@ router.get('/cleanzone/show/:groupId',async(req,res)=>{
     return res.status(200).send(data);
 });
 
+// [PUT] 특정 그룹의 청소 구역별 담당자 정보 업데이트
 router.put('/cleanzone/updatemember/:groupId',async(req,res)=>{
     const cleanZoneAndMemberList = req.body;
     const groupId = req.params.groupId;
+    // 기존 청소구역-멤버 관계 삭제
     const cleanZones = await CleanZoneModel.findByGroupId(groupId);
     console.log(cleanZones);
     //data = []
@@ -46,6 +51,8 @@ router.put('/cleanzone/updatemember/:groupId',async(req,res)=>{
             break;
         }
     }
+
+    // 새로운 관계 저장
     for (const cm of cleanZoneAndMemberList){
         console.log(cm);
         const joinGroupMember = await JoinGroupMemberModel.findByGroupAndMemberId(groupId,cm.memberId);
@@ -58,9 +65,11 @@ router.put('/cleanzone/updatemember/:groupId',async(req,res)=>{
     return res.status(200).send('업데이트 완료');
 });
 
+// [PUT] 특정 그룹의 청소 구역 이름 목록 업데이트
 router.put('/cleanzone/updatezone/:groupId',async(req,res)=>{
     const groupId = req.params.groupId;
     const cleanzones = req.body;
+    // 기존 청소구역 모두 삭제 후 새로 저장
     await CleanZoneModel.delete(groupId);
     for (const cleanzone of cleanzones){
         console.log(cleanzone);
@@ -71,6 +80,7 @@ router.put('/cleanzone/updatezone/:groupId',async(req,res)=>{
 })
 
 
+// 청소 구역들을 멤버에게 랜덤으로 배정하는 함수
 function assignCleanZonesToMembers(cleanZones, members) {
   // 배열 복사해서 셔플
   function shuffle(array) {
@@ -112,9 +122,10 @@ function assignCleanZonesToMembers(cleanZones, members) {
 }
 
 
-
+// [GET] 특정 그룹의 청소 구역을 랜덤으로 멤버에게 배정
 router.get('/cleanzone/random/:groupId',async(req,res)=>{
     const groupId = req.params.groupId;
+    // 청소 구역 목록 조회 및 JSON 형태로 변환
     const cleanZones = await CleanZoneModel.findByGroupId(groupId);
     console.log(cleanZones)
     const cleanZonesJson = {}
@@ -127,6 +138,7 @@ router.get('/cleanzone/random/:groupId',async(req,res)=>{
         id+=1;
     }
 
+    // 그룹의 멤버 조회 및 JSON 형태로 변환
     const member = await JoinGroupMemberModel.findByGroupId(groupId);
     const members={}
     id=0;
@@ -140,7 +152,7 @@ router.get('/cleanzone/random/:groupId',async(req,res)=>{
     }
     console.log(members);
 
-
+    // 랜덤 배정 로직 실행
     const result = assignCleanZonesToMembers(cleanZonesJson, members);
     return res.status(200).send(result);
 })

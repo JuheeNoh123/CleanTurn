@@ -5,18 +5,20 @@ const memberModel = require('../../models/memberModel');
 const router = express.Router();
 const getTodayCleanList = require('../cleanZone/getTodayCleanList');
 const sendEmail = require('../../util/sendmail');
-
+// 매일 밤 23:59 (서울 시간 기준) 청소 인증 상태 점검 작업 예약
 cron.schedule('59 23 * * *', async () => {
     //오늘 청소 해야하는 담당자&구역 정보
-    const userId = c.member.id;
+    const userId = c.member.id;// 담당자 ID
     const result = await getTodayCleanList();
     for (const c of result){
         if (c.isCleaned === false) {
             //게시글 안 올림: streak 삭제 & 점수 감소
             await redisClient.del(`clean:streak:${userId}`);
             console.log(`게시글 없음 → streak 삭제`);
+            // 점수는 최소 0점으로 유지하며 10점 감소
             const updatedScore = Math.max(c.member.cleaningScore - 10, 0);//최소 0점
             await memberModel.updateCleaningScore(userId, updatedScore);
+            // 청소 점수 하락 알림 이메일 발송
             await sendEmail({
                 to: e.member.email,
                 //to:'juhee10131013@gmail.com',
@@ -48,6 +50,7 @@ cron.schedule('59 23 * * *', async () => {
                 await memberModel.updateCleaningScore(userId, updatedScore);
                 await redisClient.del(`clean:streak:${userId}`);
                 console.log(`🎉 streak 3회 달성 → 점수 증가 + streak 초기화`);
+                // 청소 점수 상승 알림 이메일 발송
                 await sendEmail({
                 to: e.member.email,
                 //to:'juhee10131013@gmail.com',
@@ -73,7 +76,7 @@ cron.schedule('59 23 * * *', async () => {
     }
     console.log(result);
 },{
-    timezone: "Asia/Seoul"
+    timezone: "Asia/Seoul" // 서울 시간대 기준 실행
 });
 
 module.exports = router;

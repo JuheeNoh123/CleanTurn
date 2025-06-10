@@ -1,3 +1,4 @@
+//access token 재발급을 위한 라우터
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const { sign, verify, refreshVerify } = require('../util/jwt-util');
