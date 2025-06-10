@@ -20,7 +20,7 @@ const randomschedule = require('./routes/schedule/randomschedule');
 const resetCleanStreak = require('./util/resetCleanStreak');
 
 const cleanboard = require('./routes/cleanboard/cleanboard');
-const makecleanboard = require('./routes/cleanBoard/makeboard');
+const makecleanboard = require('./routes/cleanboard/makeboard');
 
 const app = express();
 app.use(cors({

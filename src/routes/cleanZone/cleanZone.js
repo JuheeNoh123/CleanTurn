@@ -81,17 +81,12 @@ function assignCleanZonesToMembers(cleanZones, members) {
     }
     return result;
   }
-
   // cleanZones와 members를 배열로 변환
   const cleanZoneArray = Object.values(cleanZones);
   const memberArray = Object.values(members);
-
   // 셔플
-  //const shuffledZones = shuffle(cleanZoneArray);
   const shuffledMembers = shuffle(memberArray);
-
   const result = [];
-
   // 1차: 각 멤버에게 최소 하나씩 배정
   const minAssignCount = Math.min(cleanZoneArray.length, shuffledMembers.length);
   for (let i = 0; i < minAssignCount; i++) {
@@ -102,7 +97,6 @@ function assignCleanZonesToMembers(cleanZones, members) {
       memberName: shuffledMembers[i].name
     });
   }
-
   // 2차: 남은 청소 구역 있으면 랜덤 멤버에게 추가 배정
   for (let i = minAssignCount; i < cleanZoneArray.length; i++) {
     const randomMember = memberArray[Math.floor(Math.random() * memberArray.length)];

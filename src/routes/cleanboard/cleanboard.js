@@ -25,6 +25,7 @@ router.get('/status/:groupId', async(req,res) => {
     
     console.log(sendlist);
     data = []
+    data.push({"memberId": id})
     let uploadButton = false;
     for(const sl of sendlist){
         console.log("sl",sl)

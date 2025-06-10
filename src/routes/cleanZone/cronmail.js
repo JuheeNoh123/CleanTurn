@@ -2,18 +2,23 @@ const express = require('express');
 const sendEmail = require('../../util/sendmail');
 const getTodayCleanList = require('./getTodayCleanList');
 const router = express.Router();
+// node-cron 모듈을 불러와 스케줄링 기능 사용
 const cron = require('node-cron');
-cron.schedule('36 4 * * *', async () => {
-    const sendlist = await getTodayCleanList(); 
+
+// 매일 오전 9시에 실행되도록 스케줄링 (cron 표현식: '0 9 * * *')
+cron.schedule('0 9 * * *', async () => {
+    const sendlist = await getTodayCleanList(); // 오늘의 청소 담당자 목록을 가져옴
     
     console.log(sendlist);
 
+    // 리스트를 순회하면서 청소를 아직 안 한 사람에게만 이메일 전송
     for (const e of sendlist){
-        if(!e.isCleaned){
+        if(!e.isCleaned){ // 청소를 하지 않은 경우
             await sendEmail({
-                to: e.member.email,
-                //to:'juhee10131013@gmail.com',
-                subject: `[CLEANTURN]  ${e.member.name}님 청소 구역 안내`,
+                // 실제 사용 시 아래 주소 대신 e.member.email 사용
+                //to: e.member.email,
+                to:'juhee10131013@gmail.com',// 테스트용 이메일 주소
+                subject: `[CLEANTURN]  ${e.member.name}님 청소 구역 안내`, // 이메일 제목
                 html: `
                     <div style="
                     max-width: 480px;
@@ -44,12 +49,12 @@ cron.schedule('36 4 * * *', async () => {
                     즐거운 하루 보내세요! 😊
                 </p>
                 </div>
-                    `
+                    ` // 이메일 HTML 본문
             });
         }
     }
 },{
-    timezone: "Asia/Seoul"
+    timezone: "Asia/Seoul"  // 실행 시간대를 서울(Asia/Seoul)로 지정
 });
 
 module.exports = router;
